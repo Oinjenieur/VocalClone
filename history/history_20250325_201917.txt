@@ -1,0 +1,7 @@
+Date: 20250325_201917
+Langue: fr
+Voix: tts_models/be/common-voice/glow-tts
+Vitesse: 1.0
+
+Texte:
+hello how can i serve

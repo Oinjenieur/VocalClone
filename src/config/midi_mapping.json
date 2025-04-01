@@ -1,0 +1,30 @@
+{
+    "mappings": {
+        "note": {},
+        "cc": {},
+        "pb": {},
+        "pc": {}
+    },
+    "phrases": {
+        "trigger_1": {
+            "text": "Bonjour, comment puis-je vous aider ?",
+            "voice": null
+        },
+        "trigger_2": {
+            "text": "Merci pour votre attention.",
+            "voice": null
+        },
+        "trigger_3": {
+            "text": "Pouvez-vous répéter s'il vous plaît ?",
+            "voice": null
+        },
+        "trigger_4": {
+            "text": "Voici une démonstration de synthèse vocale.",
+            "voice": null
+        },
+        "trigger_5": {
+            "text": "À bientôt !",
+            "voice": null
+        }
+    }
+}

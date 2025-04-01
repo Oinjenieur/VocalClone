@@ -1,0 +1,5 @@
+{
+  "embedding_path": "src\\models\\voices\\UTILISATEUR\\user_voice_test_3_1743108521\\samples\\original.wav",
+  "speaker_id": "user_voice_test_3_1743108521",
+  "prompt_text": "Ceci est un échantillon de ma voix clonée avec OpenVoice."
+}

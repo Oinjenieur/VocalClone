@@ -1,0 +1,35 @@
+name: CI VocalClone
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  structure-check:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+        
+    - name: Vérification des fichiers principaux
+      run: |
+        test -f src/main.py
+        test -d src/core
+        test -d src/gui
+        test -d src/utils
+        test -f requirements.txt
+        test -f README.md
+        
+    - name: Vérification des imports de base
+      run: |
+        python ci_basic_imports.py
+        
+    - name: Résumé
+      run: |
+        echo "Vérification de structure terminée"
+        echo "Le projet VocalClone est prêt pour la review" 

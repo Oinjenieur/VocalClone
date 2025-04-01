@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="300" fill="#1e1e1e"/>
+    <text x="200" y="150" text-anchor="middle" fill="white" font-size="48" font-family="Arial">Vocal Clone</text>
+    <text x="200" y="200" text-anchor="middle" fill="#007acc" font-size="24" font-family="Arial">Chargement...</text>
+</svg> 

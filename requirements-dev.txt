@@ -1,0 +1,17 @@
+# Inclure d'abord toutes les dépendances normales
+-r requirements.txt
+
+# Outils de développement
+pytest>=7.0.0
+pytest-cov>=4.0.0
+flake8>=6.0.0
+black>=23.0.0
+isort>=5.12.0
+mypy>=1.0.0
+pylint>=2.17.0
+
+# Documentation
+sphinx>=6.0.0
+sphinx-rtd-theme>=1.2.0
+nbsphinx>=0.9.0
+myst-parser>=1.0.0 

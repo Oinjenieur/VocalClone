@@ -1,0 +1,6 @@
+@echo off
+chcp 65001
+echo Prechargement des modeles...
+python src/preload.py
+echo Lancement de l'application...
+python src/main.py 

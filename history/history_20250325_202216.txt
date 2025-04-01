@@ -1,0 +1,7 @@
+Date: 20250325_202216
+Langue: en
+Voix: tts_models/en/ek1/tacotron2
+Vitesse: 1.0
+
+Texte:
+how can i help you

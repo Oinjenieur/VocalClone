@@ -1,0 +1,7 @@
+Date: 20250325_202005
+Langue: fr
+Voix: tts_models/fr/mai/tacotron2-DDC
+Vitesse: 1.0
+
+Texte:
+hello how can i serve

@@ -1,0 +1,7 @@
+Date: 20250326_231829
+Langue: fr
+Voix: tts_models/fr/css10/vits
+Vitesse: 1.25
+
+Texte:
+test 123456
