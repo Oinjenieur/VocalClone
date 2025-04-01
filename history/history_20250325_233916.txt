@@ -1,0 +1,7 @@
+Date: 20250325_233916
+Langue: fr
+Voix: tts_models/fr/css10/vits
+Vitesse: 1.0
+
+Texte:
+coucou 

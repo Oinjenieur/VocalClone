@@ -1,0 +1,7 @@
+Date: 20250326_134051
+Langue: fr
+Voix: tts_models/fr/css10/vits
+Vitesse: 1.0
+
+Texte:
+coucou je fais un test 1 2 3

@@ -1,0 +1,6 @@
+{
+  "source_file": "E:\\Users\\Chao\\Documents\\Git Repo\\OpenVoice\\src\\temp\\voice_sample.wav",
+  "date_created": "2025-03-27 00:08:36",
+  "model_type": "voice_clone",
+  "base_model": "tts_models/fr/css10/vits"
+}

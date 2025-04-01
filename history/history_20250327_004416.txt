@@ -1,0 +1,7 @@
+Date: 20250327_004416
+Langue: fr
+Voix: tts_models/fr/css10/vits
+Vitesse: 1.0
+
+Texte:
+salut les amis c'est moi votre flobidou préféré 

@@ -1,0 +1,7 @@
+Date: 20250325_210214
+Langue: fr
+Voix: tts_models/be/common-voice/glow-tts
+Vitesse: 1.0
+
+Texte:
+coucou ça va bien 

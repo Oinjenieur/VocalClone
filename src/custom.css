@@ -1,0 +1,27 @@
+/* Style pour la sélection de texte */
+::selection {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Style pour les messages d'erreur */
+.error-message {
+    background-color: #f0f0f0;
+    color: #000000;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 5px 0;
+}
+
+/* Style pour les messages d'erreur dans les champs de formulaire */
+input.error, textarea.error, select.error {
+    border-color: #ff0000;
+}
+
+.error-text {
+    color: #000000;
+    background-color: #f0f0f0;
+    padding: 5px;
+    border-radius: 4px;
+    margin-top: 5px;
+} 

@@ -1,0 +1,7 @@
+Date: 20250325_202025
+Langue: fr
+Voix: tts_models/fr/mai/tacotron2-DDC
+Vitesse: 1.0
+
+Texte:
+bonjour comment puis je vous aider
