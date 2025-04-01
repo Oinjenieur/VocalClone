@@ -1,29 +1,38 @@
+# Set default behavior to automatically normalize line endings
 * text=auto
 
-# Python files
+# Explicitly declare text files to be normalized
 *.py text eol=lf
-*.pyx text eol=lf
-*.pxd text eol=lf
-
-# Shell scripts should use LF
+*.md text
+*.txt text
+*.html text
+*.css text
+*.js text
+*.yml text
+*.yaml text
+*.json text
 *.sh text eol=lf
 *.bat text eol=crlf
 
-# Documentation files
-*.md text
-*.txt text
-*.rst text
-
-# Binary files
-*.wav binary
-*.mp3 binary
-*.ogg binary
+# Declare binary files that should not be modified
 *.png binary
 *.jpg binary
 *.jpeg binary
+*.gif binary
 *.ico binary
-*.pkl binary
-*.pt binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.zip binary
 *.pth binary
+*.pt binary
 *.model binary
-*.npy binary 
+*.npy binary
+*.pkl binary
+
+# Python files
+*.pyx text eol=lf
+*.pxd text eol=lf
+
+# Documentation files
+*.rst text 
