@@ -29,13 +29,13 @@ class ModelManager:
     AVAILABLE_MODELS = {
         "openvoice_v2": {
             "name": "OpenVoice V2",
-            "languages": ["fr", "en", "es", "de", "it", "zh"],
+            "languages": ["fr", "en", "es", "de", "it", "zh", "ko"],
             "description": "Le meilleur équilibre entre qualité, multilingue et vitesse",
             "repo": "myshell-ai/OpenVoice"
         },
         "bark": {
             "name": "Bark",
-            "languages": ["fr", "en", "es", "de", "it", "zh", "ja", "pt", "ru"],
+            "languages": ["fr", "en", "es", "de", "it", "zh", "ja", "pt", "ru", "ko"],
             "description": "Excellent pour le multilingue avec voix expressives",
             "repo": "suno-ai/bark"
         },
@@ -535,28 +535,35 @@ class ModelManager:
             
     def _adapt_to_language(self, speaker_embedding, language):
         """Adapte l'embedding du locuteur à une langue spécifique"""
-        # Simule l'adaptation à la langue
-        # Dans une implémentation réelle, on utiliserait un modèle de transfert
-        import numpy as np
-        
-        # Perturbation légère de l'embedding selon la langue
-        language_seed = sum(ord(c) for c in language)
-        np.random.seed(language_seed)
-        
-        # Créer une variation de l'embedding original
-        variation = np.random.randn(len(speaker_embedding)) * 0.1
-        adapted_embedding = speaker_embedding + variation
-        
-        # Renormaliser
-        adapted_embedding = adapted_embedding / np.linalg.norm(adapted_embedding)
-        
-        return adapted_embedding
+        try:
+            import numpy as np
+            
+            # Perturbation légère de l'embedding selon la langue
+            language_seed = sum(ord(c) for c in language)
+            np.random.seed(language_seed)
+            
+            # Créer une variation de l'embedding original
+            variation = np.random.randn(len(speaker_embedding)) * 0.1
+            
+            # Ajustements spécifiques pour le coréen
+            if language == "ko":
+                # Ajouter des caractéristiques spécifiques au coréen
+                korean_features = np.random.randn(len(speaker_embedding)) * 0.05
+                variation += korean_features
+            
+            adapted_embedding = speaker_embedding + variation
+            
+            # Renormaliser
+            adapted_embedding = adapted_embedding / np.linalg.norm(adapted_embedding)
+            
+            return adapted_embedding
+            
+        except Exception as e:
+            logger.error(f"Erreur lors de l'adaptation à la langue {language}: {e}", exc_info=True)
+            return speaker_embedding
         
     def _create_bark_history_prompt(self, audio_data, sample_rate, voice_name, languages):
         """Crée un prompt d'historique pour Bark à partir de l'audio"""
-        # Simuler la création d'un prompt d'historique Bark
-        # Dans une implémentation réelle, on extrairait les caractéristiques avec Bark
-        
         try:
             # Vérifier si CUDA est disponible
             import torch
@@ -590,7 +597,8 @@ class ModelManager:
                 "coarse_tokens": coarse_tokens,
                 "fine_tokens": fine_tokens,
                 "voice_name": voice_name,
-                "languages": languages
+                "languages": languages,
+                "korean_support": "ko" in languages  # Ajouter un flag pour le support coréen
             }
             
             return history_prompt
@@ -609,7 +617,8 @@ class ModelManager:
                 "fine_tokens": fine_tokens,
                 "voice_name": voice_name,
                 "languages": languages,
-                "is_fallback": True
+                "is_fallback": True,
+                "korean_support": "ko" in languages
             }
         
     def _extract_coqui_speaker_embedding(self, audio_data, sample_rate):
@@ -867,17 +876,7 @@ class ModelManager:
             return False
             
     def synthesize(self, text, model_id=None, language="fr", params=None):
-        """Synthétise du texte en parole en utilisant le modèle spécifié
-
-        Args:
-            text (str): Texte à synthétiser
-            model_id (str, optional): ID du modèle à utiliser. Defaults to None.
-            language (str, optional): Code de langue. Defaults to "fr".
-            params (dict, optional): Paramètres de synthèse. Defaults to None.
-
-        Returns:
-            tuple: (audio_data, sample_rate)
-        """
+        """Synthétise du texte en parole en utilisant le modèle spécifié"""
         if params is None:
             params = {}
         
@@ -922,111 +921,6 @@ class ModelManager:
             elif engine_type == "midi":
                 use_engine = "openvoice_v2"
             
-            # Utiliser Coqui TTS pour la synthèse vocale légère
-            if use_engine == "coqui_tts":
-                try:
-                    update_progress(0.1, "Initialisation de Coqui TTS...")
-                    
-                    from TTS.api import TTS
-                    import torch
-                    import numpy as np
-                    import tempfile
-                    import os
-                    from scipy.io import wavfile
-                    from pydub import AudioSegment
-                    import pydub.effects
-                    
-                    # Conversion de la langue pour Coqui TTS
-                    lang_map = {
-                        "fr": "fr",
-                        "en": "en",
-                        "de": "de",
-                        "es": "es",
-                        "it": "it",
-                        "nl": "nl",
-                        "ru": "ru",
-                        "zh": "zh-cn",
-                        "ja": "ja",
-                        "pt": "pt",
-                    }
-                    
-                    tts_lang = lang_map.get(language[:2], "fr")
-                    
-                    update_progress(0.2, "Chargement du modèle...")
-                    
-                    # Sélectionner le modèle approprié en fonction de la langue
-                    if tts_lang == "fr":
-                        model_name = "tts_models/fr/mai/tacotron2-DDC"
-                    elif tts_lang == "en":
-                        model_name = "tts_models/en/ljspeech/glow-tts"
-                    elif tts_lang in lang_map.values():
-                        # Pour d'autres langues, on utilise des modèles multilingues
-                        model_name = "tts_models/multilingual/multi-dataset/xtts_v2"
-                    else:
-                        # Fallback sur l'anglais
-                        model_name = "tts_models/en/ljspeech/tacotron2-DDC"
-                    
-                    # Créer des fichiers temporaires pour stocker l'audio
-                    temp_dir = tempfile.mkdtemp()
-                    temp_file = os.path.join(temp_dir, "coqui_output.wav")
-                    
-                    update_progress(0.3, "Génération de l'audio...")
-                    
-                    # Vérifier si CUDA est disponible
-                    device = "cuda:0" if torch.cuda.is_available() else "cpu"
-                    
-                    # Initialiser TTS avec le modèle approprié
-                    tts = TTS(model_name, progress_bar=False).to(device)
-                    
-                    # Générer l'audio
-                    tts.tts_to_file(text=text, file_path=temp_file, language=tts_lang)
-                    
-                    update_progress(0.6, "Post-traitement de l'audio...")
-                    
-                    # Charger le fichier audio pour les transformations
-                    audio_segment = AudioSegment.from_file(temp_file)
-                    
-                    # Appliquer la vitesse si spécifiée
-                    if params.get("speed", 1.0) != 1.0:
-                        audio_segment = pydub.effects.speedup(audio_segment, params["speed"])
-                    
-                    # Appliquer le pitch si spécifié
-                    if params.get("pitch", 0) != 0:
-                        octaves = params["pitch"] / 12.0
-                        new_sample_rate = int(audio_segment.frame_rate * (2.0 ** octaves))
-                        
-                        audio_segment = audio_segment._spawn(audio_segment.raw_data, 
-                                                           overrides={'frame_rate': new_sample_rate})
-                        audio_segment = audio_segment.set_frame_rate(22050)  # Taux d'échantillonnage standard
-                    
-                    update_progress(0.8, "Finalisation...")
-                    
-                    # Convertir en numpy array
-                    array = np.array(audio_segment.get_array_of_samples())
-                    audio_data = array.astype(np.float32) / 32768.0
-                    sample_rate = audio_segment.frame_rate
-                    
-                    # Nettoyer les fichiers temporaires
-                    try:
-                        os.remove(temp_file)
-                        os.rmdir(temp_dir)
-                    except:
-                        pass
-                    
-                    update_progress(1.0, "Terminé!")
-                    
-                    return audio_data, sample_rate
-                    
-                except ImportError as e:
-                    update_progress(0.5, "Coqui TTS non disponible, utilisation d'un moteur alternatif...")
-                    # Si Coqui TTS n'est pas disponible, utiliser OpenVoice V2 comme solution de repli
-                    use_engine = "openvoice_v2"
-                    
-                except Exception as e:
-                    update_progress(0.5, "Erreur avec Coqui TTS, utilisation d'un moteur alternatif...")
-                    # En cas d'erreur, passer à OpenVoice comme solution de repli
-                    use_engine = "openvoice_v2"
-            
             # Utiliser Bark pour la synthèse vocale de haute qualité
             if use_engine == "bark":
                 try:
@@ -1050,9 +944,7 @@ class ModelManager:
                         "zh": "zh_speaker_1",
                         "pt": "pt_speaker_0",
                         "ru": "ru_speaker_4",
-                        "pl": "pl_speaker_0",
-                        "tr": "tr_speaker_0",
-                        "nl": "nl_speaker_1"
+                        "ko": "ko_speaker_0"  # Ajout du support coréen
                     }
                     
                     # Sélectionner l'orateur en fonction de la langue
@@ -1062,6 +954,27 @@ class ModelManager:
                     emotion = params.get("emotion", "neutral")
                     
                     update_progress(0.3, "Création du prompt...")
+                    
+                    # Traitement spécial pour le coréen
+                    if language == "ko":
+                        from .korean_language_support import KoreanLanguageSupport
+                        
+                        # Valider le texte coréen
+                        is_valid, error_msg = KoreanLanguageSupport.validate_korean_text(text)
+                        if not is_valid:
+                            raise ValueError(f"Texte coréen invalide: {error_msg}")
+                        
+                        # Préparer le texte pour Bark
+                        text = KoreanLanguageSupport.prepare_for_bark(text)
+                        
+                        # Utiliser le prompt coréen spécifique
+                        speaker = KoreanLanguageSupport.get_korean_speaker_prompt()
+                        
+                        # Ajouter l'émotion si spécifiée
+                        if emotion != "neutral":
+                            emotion_prompts = KoreanLanguageSupport.get_korean_emotion_prompts()
+                            if emotion in emotion_prompts:
+                                speaker = emotion_prompts[emotion]
                     
                     # Construire le prompt pour Bark
                     prompt = f"[{speaker}][{emotion}] {text}"

@@ -1,13 +1,5 @@
-# Fichiers sensibles
-.env
-config.json
-*.pem
-*.key
-*.token
-tokens/
-credentials/
-
-# Python
+# Environnements Python
+venv/
 __pycache__/
 *.py[cod]
 *$py.class
@@ -25,64 +17,28 @@ lib64/
 parts/
 sdist/
 var/
-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
 
-# Virtual Environment
-venv/
-venv-fast/
-venv-myshell/
-venv-py310/
-ENV/
+# Fichiers de script Windows générés
+*.vbs
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
+# Dossiers temporaires
+temp/
+tmp/
 
-# Audio files
-*.wav
-*.mp3
-*.ogg
+# Dossiers de modèles
+outputs/
+models/
 
-# TTS models cache
-.tts_cache/
-
-# Logs
+# Fichiers de logs
 *.log
 
-# Local configuration
-config.ini
+# Fichiers d'environnement
+.env
+.venv
 
-# Temporary files
-temp_*
-*.tmp
-
-# Jupyter
-.ipynb_checkpoints/
-
-# Données de traitement
-processed/
-outputs/
-outputs_v2/
-checkpoints/
-checkpoints_v2/
-trash/
-examples*/
-*.zip
-
-# Modèles préentraînés problématiques avec .git
-models/bark/
-models/coqui_tts/
-models/openvoice_v2/
-models/styletts2/
-models/*/
-
-# Autres dossiers de modèles
-bark/
-styletts2/
-valle_x/
-spark_tts/
+# Fichiers système
+.DS_Store
+Thumbs.db

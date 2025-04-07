@@ -46,6 +46,11 @@ class ModelInstaller:
                 "repo": "https://github.com/Spark-TTS/Spark-TTS.git",
                 "checkpoint_url": "https://huggingface.co/Spark-TTS/Spark-TTS/resolve/main/spark_tts.pt",
                 "requirements": ["torch", "numpy", "soundfile"]
+            },
+            "suno_v4": {
+                "repo": "https://github.com/suno-ai/bark.git",
+                "checkpoint_url": "https://huggingface.co/suno/bark-v4/resolve/main/model.pt",
+                "requirements": ["torch", "transformers", "accelerate"]
             }
         }
 
