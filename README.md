@@ -34,7 +34,37 @@ VocalClone/
 
 ## Installation
 
-### Installation standard
+### Option 1: Installation simplifiée (recommandée)
+
+Utilisez les scripts d'installation fournis qui gèrent automatiquement les conflits de dépendances :
+
+#### Windows
+```
+install_py38.bat
+```
+
+#### Linux/macOS
+```
+chmod +x install_py38.sh
+./install_py38.sh
+```
+
+### Option 2: Installation minimale (en cas de problèmes)
+
+Si vous rencontrez des problèmes avec l'installation standard, essayez l'installation minimale qui n'inclut que les dépendances essentielles :
+
+#### Windows
+```
+install_minimal.bat
+```
+
+#### Linux/macOS
+```
+chmod +x install_minimal.sh
+./install_minimal.sh
+```
+
+### Option 3: Installation manuelle standard
 
 1. Cloner le repository
    ```
@@ -56,27 +86,36 @@ VocalClone/
    pip install -r requirements.txt
    ```
 
-### Résolution des problèmes d'installation
+## Résolution des problèmes d'installation
 
-Si vous rencontrez des problèmes de conflits de dépendances (notamment avec Python 3.8), essayez :
+### Erreur de conflit protobuf avec onnx/trainer
 
-1. **Installer avec les versions compatibles de protobuf**
+Si vous obtenez une erreur indiquant un conflit de dépendances impliquant protobuf, onnx et/ou trainer, utilisez les scripts de correction fournis :
+
+#### Windows
+```
+fix_dependencies.bat
+```
+
+#### Linux/macOS
+```
+chmod +x fix_dependencies.sh
+./fix_dependencies.sh
+```
+
+### Autres solutions de dépannage
+
+1. **Installation manuelle dans un ordre spécifique**
    ```
-   pip install protobuf==3.20.0
+   pip install protobuf==3.20.2
+   pip install onnx==1.14.0
+   pip install trainer==0.0.20 --no-deps
    pip install -r requirements.txt
    ```
 
-2. **Installation manuelle des composants principaux**
+2. **Pour Python 3.8 spécifiquement**
    ```
-   pip install protobuf==3.20.0
-   pip install onnx==1.14.0 onnxruntime==1.15.0
-   pip install trainer==0.0.20
-   pip install torch transformers==4.33.0
-   pip install -r requirements.txt
-   ```
-
-3. **Si vous utilisez Python 3.8 spécifiquement**, utilisez cette commande :
-   ```
+   pip install setuptools==65.5.0 wheel==0.38.0
    pip install -e .
    ```
    
@@ -102,16 +141,18 @@ L'interface se compose de plusieurs onglets:
 
 Consultez la documentation dans le dossier `docs/` pour plus de détails.
 
-## Résolution de problèmes
-
-### Conflits de dépendances
-
-Si vous rencontrez un message d'erreur concernant des conflits entre trainer, onnx et protobuf, suivez les instructions d'installation alternatives ci-dessus.
+## Résolution de problèmes courants
 
 ### Problèmes audio
 
 - Assurez-vous que votre microphone est correctement configuré
 - Vérifiez que ffmpeg est installé et accessible dans le PATH
+
+### Erreurs à l'exécution
+
+- Vérifiez que vous avez activé l'environnement virtuel
+- En cas d'erreur liée à un module manquant, installez-le manuellement : `pip install <nom_du_module>`
+- Pour les problèmes persistants, essayez l'installation minimale avec `install_minimal.bat` ou `install_minimal.sh`
 
 ## Contribution
 
